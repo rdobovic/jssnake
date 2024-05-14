@@ -1,3 +1,5 @@
+const SNAKE_COLOR = '#4E9F3D';
+
 class SnakeBoard {
     constructor(ctx, rows, cols, gap) {
         this.ctx = ctx;
@@ -17,7 +19,7 @@ class SnakeBoard {
     }
 
     drawBox(col, row) {
-        this.ctx.fillStyle = "green";
+        this.ctx.fillStyle = SNAKE_COLOR;
         this.ctx.fillRect(
             this.posToCor(col), this.posToCor(row),
             this.boxSize, this.boxSize
@@ -26,7 +28,7 @@ class SnakeBoard {
 
     drawHead(col, row, dir) {
         this.ctx.beginPath();
-        this.ctx.fillStyle = "green";
+        this.ctx.fillStyle = SNAKE_COLOR;
 
         const w = this.boxSize;
         const x = this.posToCor(col), y = this.posToCor(row);
@@ -104,6 +106,7 @@ class Snake {
 
         this.score = 0;
         this.parts = [];
+        this.commandToExecute = null;
 
         this.parts.push({
             col: 5,
@@ -122,6 +125,10 @@ class Snake {
     start() {
         this.interval = setInterval(() => {
             let i;
+
+            if (this.commandToExecute) {
+                this.parts[0].dir = this.commandToExecute;
+            }
 
             const nextPos = {
                 col: this.parts[this.parts.length - 1].col,
@@ -213,7 +220,7 @@ class Snake {
             )
                 return;
             
-            this.parts[0].dir = newDir;
+            this.commandToExecute = newDir;
         }
     }
 }
@@ -225,6 +232,7 @@ window.onload = () => {
     const score = document.getElementById('score');
     const canvas = document.getElementById('field');
     const ctx = canvas.getContext('2d');
+    const paused = document.getElementById('paused');
     const gameOver = document.getElementById('gameover');
 
     let dead = false;
@@ -253,7 +261,13 @@ window.onload = () => {
         if (dead) return;
 
         if (e.key == 'p') {
-            snake.isRunning() ? snake.stop() : snake.start();
+            if (snake.isRunning()) {
+                snake.stop();
+                paused.style.display ="block";
+            } else {
+                snake.start();
+                paused.style.display ="none";
+            }
         }
 
         snake.command(e.key);
