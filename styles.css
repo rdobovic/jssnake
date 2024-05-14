@@ -1,0 +1,35 @@
+.field {
+    border: 1px solid black;
+}
+
+.game {
+    gap: 0.5;
+    padding: 0.8rem;
+    display: inline-flex;
+    flex-direction: column;
+    background-color: green;
+    border-radius: 0.5rem;
+}
+
+canvas {
+    background-color: rgb(31, 31, 31);
+}
+
+.game-board {
+    position: relative;
+    display: inline-flex;
+    /*background-color: rgb(31, 31, 31);*/
+}
+
+#gameover {
+    display: none ;
+    position: absolute;
+    color: red;
+    padding: 1rem;
+    border: 1px solid red;
+    font-weight: bold;
+    font-size: larger;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
